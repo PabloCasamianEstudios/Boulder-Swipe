@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'; // ← cambia esto
+import { createRouter, createWebHashHistory } from 'vue-router';
 import GameScene from '../components/GameScene.vue';
 
 const routes = [
@@ -10,7 +10,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(), // ← y esto
+  history: createWebHashHistory(),
   routes,
 });
 
