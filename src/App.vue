@@ -1,8 +1,7 @@
 <template>
-  <div>
-    <button @click="goToGame">Ir a Game Scene</button>
+  <main>
     <router-view />
-  </div>
+  </main>
 </template>
 
 <script>
@@ -16,4 +15,13 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+body {
+    min-height: 100vh;
+}
+
+main{
+    min-height: 100vh;
+
+}
+</style>

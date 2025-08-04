@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import GameScene from '../components/GameScene.vue';
+import MenuScene from '../components/MenuScene.vue';
 
 const routes = [
   {
@@ -7,6 +8,11 @@ const routes = [
     name: 'GameScene',
     component: GameScene,
   },
+  {
+    path: '/',
+    name: 'MenuScene',
+    component: MenuScene,
+  }
 ];
 
 const router = createRouter({

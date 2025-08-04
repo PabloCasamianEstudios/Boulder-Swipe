@@ -1,12 +1,13 @@
 <template>
   <div class="game-scene">
+    <div class="background-pattern"></div>
     <h1>Game Scene</h1>
     <p>This is where the game will be played.</p>
 
     <div class="debug-counters">
-  <p>Rechazos (⟵): {{ leftSwipes }}</p>
-  <p>Aceptados (⟶): {{ rightSwipes }}</p>
-</div>
+      <p>Rechazos (⟵): {{ leftSwipes }}</p>
+      <p>Aceptados (⟶): {{ rightSwipes }}</p>
+    </div>
 
     <div class="card-stack">
       <div
@@ -118,8 +119,7 @@ export default {
         return `translate(${this.cardOffsetX}px, ${this.cardOffsetY}px) rotate(${rotation}deg)`;
       }
       
-      // Efecto de apilamiento para cartas inferiores
-      const stackOffset = index * 5;  // Cambiado para que las cartas posteriores aparezcan debajo
+      const stackOffset = index * 5;
       return `translateY(${stackOffset}px) scale(${1 - stackOffset * 0.002})`;
     },
     
@@ -170,28 +170,26 @@ export default {
       }
     },
     
-   animateCardOut(forcedDirection = null) {
-  const direction = forcedDirection ?? (this.cardOffsetX > 0 ? 1 : -1);
-  const screenWidth = window.innerWidth;
+    animateCardOut(forcedDirection = null) {
+      const direction = forcedDirection ?? (this.cardOffsetX > 0 ? 1 : -1);
+      const screenWidth = window.innerWidth;
 
-  this.cardOffsetX = direction * (screenWidth * 1.2);
-  this.cardOffsetY = 0;
+      this.cardOffsetX = direction * (screenWidth * 1.2);
+      this.cardOffsetY = 0;
 
-  setTimeout(() => {
-    const swipedCard = this.retos[0];
+      setTimeout(() => {
+        const swipedCard = this.retos[0];
 
-    if (direction === 1) {
-      this.handleSwipeRight(swipedCard);
-    } else {
-      this.handleSwipeLeft(swipedCard);
-    }
+        if (direction === 1) {
+          this.handleSwipeRight(swipedCard);
+        } else {
+          this.handleSwipeLeft(swipedCard);
+        }
 
-    this.retos.shift();
-    this.resetDragState();
-  }, 400);
-}
-
-,
+        this.retos.shift();
+        this.resetDragState();
+      }, 400);
+    },
     
     resetCardPosition() {
       this.cardOffsetX = 0;
@@ -204,34 +202,33 @@ export default {
       }, 300);
     },
     
-   swipeLeft() {
-  if (this.retos.length === 0) return;
-  this.isSwipingLeft = true;
-  this.activeIndex = 0;
-  setTimeout(() => {
-    this.animateCardOut(-1);
-  }, 10);
-},
+    swipeLeft() {
+      if (this.retos.length === 0) return;
+      this.isSwipingLeft = true;
+      this.activeIndex = 0;
+      setTimeout(() => {
+        this.animateCardOut(-1);
+      }, 10);
+    },
 
-swipeRight() {
-  if (this.retos.length === 0) return;
-  this.isSwipingRight = true;
-  this.activeIndex = 0;
-  setTimeout(() => {
-    this.animateCardOut(1);
-  }, 10);
-},
+    swipeRight() {
+      if (this.retos.length === 0) return;
+      this.isSwipingRight = true;
+      this.activeIndex = 0;
+      setTimeout(() => {
+        this.animateCardOut(1);
+      }, 10);
+    },
     
     handleSwipeLeft(card) {
-  this.leftSwipes++;
-  console.log("✖ Rechazado:", card.titulo);
-},
+      this.leftSwipes++;
+      console.log("✖ Rechazado:", card.titulo);
+    },
 
-handleSwipeRight(card) {
-  this.rightSwipes++;
-  console.log("✔ Aceptado:", card.titulo);
-},
-
+    handleSwipeRight(card) {
+      this.rightSwipes++;
+      console.log("✔ Aceptado:", card.titulo);
+    },
 
     getClientX(event) {
       return event.type.startsWith('touch') 
@@ -268,10 +265,48 @@ handleSwipeRight(card) {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: #f0f0f0;
   font-family: 'Arial', sans-serif;
   padding: 20px;
   box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  background-color: white;
+
+  .background-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      conic-gradient(
+        from 45deg at 70% 30%,
+        rgba(200, 233, 255, 0.03) 0deg,
+        transparent 90deg,
+        rgba(251, 113, 133, 0.03) 180deg,
+        transparent 270deg
+      ),
+      linear-gradient(
+        45deg, 
+        transparent 48%, 
+        rgba(0, 0, 0, 0.015) 49%, 
+        transparent 51%
+      ),
+      linear-gradient(
+        -45deg, 
+        transparent 48%, 
+        rgba(0, 0, 0, 0.015) 49%, 
+        transparent 51%
+      );
+    background-size: 120px 120px;
+    z-index: 0;
+    opacity: 0.8;
+  }
+
+  h1, p, .debug-counters, .card-stack, .actions {
+    position: relative;
+    z-index: 1;
+  }
 }
 
 .card-stack {
@@ -297,7 +332,7 @@ handleSwipeRight(card) {
   color: white;
   text-align: center;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  cursor: grab;
+  cursor: pointer;
   will-change: transform;
   
   &:active {
@@ -396,12 +431,10 @@ handleSwipeRight(card) {
   }
 }
 
-
 .debug-counters {
   margin-top: 20px;
   font-size: 14px;
   color: #333;
   text-align: center;
 }
-
 </style>
